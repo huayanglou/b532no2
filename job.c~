@@ -97,7 +97,7 @@ void scheduler()
 			printf("Switch which job to run next!\n");
 		#endif
 		next=jobselect();
-		//printf("----------------------------\n");
+		printf("----------------------------\n");
 		i=0;
 		#ifdef DEBUG
 			printf("Switch to the next job!\n");
@@ -245,10 +245,10 @@ void updateall()
 	printf("before th updateall!\n");
  	tell_before();
 #endif
-	
+	/* 更新作业运行时间 */
 	if(current)
 		current->job->run_time += 1; /* 加1代表1000ms */
-	
+	/* 更新作业等待时间及优先级 */
 	for(r=p = head; p != NULL; p = p->next){
 		for(prev_f=f=p->wq;f!=NULL;prev_f=f,f=f->next){
 			f->job->wait_time += 1000;
@@ -512,7 +512,7 @@ void do_enq(struct jobinfo *newjob,struct jobcmd enqcmd)
 
 #endif
 
-
+	/*向等待队列中增加新的作业*/
 	newnode = (struct waitqueue*)malloc(sizeof(struct waitqueue));
 	newnode->next =NULL;
 	newnode->job=newjob;
@@ -644,9 +644,18 @@ void do_stat(struct jobcmd statcmd)
 	struct waitqueue *p;
 	struct queue *QQ,*q;
 	char timebuf[BUFLEN];
+	/*
+	*打印所有作业的统计信息:
+	*1.作业ID
+	*2.进程ID
+	*3.作业所有者
+	*4.作业运行时间
+	*5.作业等待时间
+	*6.作业创建时间
+	*7.作业状态
+	*/
 
-
-
+	/* 打印信息头部 */
 	printf("JOBID\tPID\tOWNER\tRUNTIME\tWAITTIME\tCREATTIME\t\tSTATE\n");
 	if(current){
 		strcpy(timebuf,ctime(&(current->job->create_time)));
@@ -695,25 +704,25 @@ int main()
 		
 	creat_Q();
 	if(stat("/tmp/server",&statbuf)==0){
-
+		/* 如果FIFO文件存在,删掉 */
 		if(remove("/tmp/server")<0)
 			error_sys("remove failed");
 	}
 
 	if(mkfifo("/tmp/server",0666)<0)
 		error_sys("mkfifo failed");
-
+	/* 在非阻塞模式下打开FIFO */
 	if((fifo=open("/tmp/server",O_RDONLY|O_NONBLOCK))<0)
 		error_sys("open fifo failed");
 
-	
+	/* 建立信号处理函数 */
 	newact.sa_sigaction=sig_handler;
 	sigemptyset(&newact.sa_mask);
 	newact.sa_flags=SA_SIGINFO;
 	sigaction(SIGCHLD,&newact,&oldact1);
 	sigaction(SIGVTALRM,&newact,&oldact2);
 
-
+	/* 设置时间间隔为1000毫秒 */
 	interval.tv_sec=1;
 	interval.tv_usec=0;
 

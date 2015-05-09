@@ -60,10 +60,6 @@ struct queue{
 	struct queue *next;
 };
 
-void creat_Q();
-void tell_before();
-void tell_after();
-int add_round();
 void scheduler();
 void sig_handler(int sig,siginfo_t *info,void *notused);
 int allocjid();
