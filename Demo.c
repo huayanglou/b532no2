@@ -4,10 +4,10 @@
 void main()
 {
   time_t timer,timerc;
-  int count=1;  
+  int count=1;
   struct tm *timeinfo;
   time(&timer);//系统开始的时间
-  while(count<=20)
+  while(count<=30)
   {
      time(&timerc);
      if((timerc-timer)>=1)//每过1秒打印
@@ -16,5 +16,5 @@ void main()
        timer=timerc;
      }
   }
-  
+
 }

@@ -31,13 +31,6 @@ int main(int argc,char *argv[])
 	statcmd.owner=getuid();
 	statcmd.argnum=0;
 
-	 #ifdef DEBUG
-		printf("statcmd cmdtype\t%d (-1 means ENQ, -2 means DEQ, -3 means STAT)\n"
-			"statcmd owner\t%d\n",
-			statcmd.type,statcmd.owner);
-
-    	#endif 
-
 	if((fd=open("/tmp/server",O_WRONLY))<0)
 		error_sys("stat open fifo failed");
 

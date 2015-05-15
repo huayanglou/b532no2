@@ -50,20 +50,8 @@ struct jobinfo{
 struct waitqueue{
     struct waitqueue *next;
     struct jobinfo *job;
-    int round;
 };
 
-struct queue{
-	struct waitqueue *wq;
-	int prio;
-	int round;
-	struct queue *next;
-};
-
-void creat_Q();
-void tell_before();
-void tell_after();
-int add_round();
 void scheduler();
 void sig_handler(int sig,siginfo_t *info,void *notused);
 int allocjid();

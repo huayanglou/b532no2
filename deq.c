@@ -5,7 +5,6 @@
 #include <sys/ipc.h>
 #include <fcntl.h>
 #include "job.h"
-#define DEBUG
 
 /* 
  * √¸¡Ó”Ô∑®∏Ò Ω
@@ -35,11 +34,6 @@ int main(int argc,char *argv[])
 
 	strcpy(deqcmd.data,*++argv);
 	printf("jid %s\n",deqcmd.data);
-
-	#ifdef DEBUG
-			printf("deqcmd cdmtype\t%d (-1 means ENQ, -2 means DEQ, -3 means STAT)\n"
-				"deqcmd owner\t%d\n",deqcmd.type,deqcmd.owner);
-	#endif
 
 	if((fd=open("/tmp/server",O_WRONLY))<0)
 		error_sys("deq open fifo failed");

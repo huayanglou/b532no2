@@ -6,10 +6,7 @@
 #include <fcntl.h>
 #include "job.h"
 #define DEBUG
-/* 
- * √¸¡Ó”Ô∑®∏Ò Ω
- *     enq [-p num] e_file args
- */
+
 void usage()
 {
 	printf("Usage: enq[-p num] e_file args\n"
@@ -20,7 +17,7 @@ void usage()
 
 int main(int argc,char *argv[])
 {
-	int p=0;
+	int p=1;
 	int fd;
 	char c,*offset;
 	struct jobcmd enqcmd;
@@ -66,14 +63,13 @@ int main(int argc,char *argv[])
 	}
 
     #ifdef DEBUG
-		printf("enqcmd cmdtype\t%d (-1 means ENQ, -2 means DEQ, -3 means STAT)\n"
+		printf("enqcmd cmdtype\t%d\n"
 			"enqcmd owner\t%d\n"
 			"enqcmd defpri\t%d\n"
-			"enqcmd data\t%s\n"
-			"enqcmd argnum\t%d\n",
-			enqcmd.type,enqcmd.owner,enqcmd.defpri,enqcmd.data,enqcmd.argnum);
+			"enqcmd data\t%s\n",
+			enqcmd.type,enqcmd.owner,enqcmd.defpri,enqcmd.data);
 
-    #endif 
+    #endif
 
 		if((fd=open("/tmp/server",O_WRONLY))<0)
 			error_sys("enq open fifo failed");
